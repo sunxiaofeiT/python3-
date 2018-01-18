@@ -49,5 +49,5 @@ for i in range(nums):
 	# print(each_text)
 	# each_text = each_content.text.replace("\xa0"*8,"\n\n")
 	writer(names[i],"盗墓笔记.txt",each_text)
-	sys.stdout.write("已下载： %.3f" % float(i/nums) + "\r")
+	sys.stdout.write("已下载： %.1f" % float((i/nums)*100) + "% \r")
 	sys.stdout.flush()

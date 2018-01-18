@@ -46,7 +46,7 @@ if __name__ == "__main__":
     print("《都市至尊系统》开始下载：")
     for i in range(dl.nums):
         dl.writer(dl.names[i],"都市至尊系统.txt",dl.get_contents(dl.urls[i]))
-        sys.stdout.write("已下载： %.3f" % float(i/dl.nums) + "\r")
+        sys.stdout.write("已下载： %.3f" % float((i/dl.nums)*100) + "\r")
         sys.stdout.flush()
     print('下载完成！')
 
