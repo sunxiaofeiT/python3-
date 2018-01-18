@@ -3,53 +3,50 @@
 # python 3.6
 # filename: daomubiji1
 # desc: 下载盗墓笔记1，txt
+# 支持正版，代码仅供交流
 
 from bs4 import BeautifulSoup
 import requests,sys
 
-class downloader(object):
+target_url = "http://www.seputu.com"
 
-    def __init__(self):
-        self.server = "http://www.seputu.com"
-        self.target = "http://www.seputu.com/biji1/"
-        self.names = [] #章节
-        self.urls = []  #章节链接
-        self.nums = 0   #章节数
+names = []	#章节名字
+urls = [] 	#章节链接
+nums = 0	#章节数
 
-    def get_download_url(self):
-        req = requests.get(url = self.target)
-        html  = req.text
-        div_bf = BeautifulSoup(html,'html.parser')
-        div = div_bf.find_all("div",class_="listmain")
-        a_bf = BeautifulSoup(str(div[0]),"html.parser")
-        a = a_bf.find_all("a")
-        self.nums = len(a[15:])
-        for each in a[15:]:
-            self.names.append(each.string)
-            self.urls.append(self.server + each.get('href'))
+req = requests.get(target_url)
+html = req.text
 
-    def get_contents(self,target):
-        req = requests.get(url = target)
-        html = req.text
-        bf = BeautifulSoup(html,'html.parser')
-        texts = bf.find_all("div", class_="showtxt")
-        texts = texts[0].text.replace("\xa0"*8,'\n\n')
-        return texts
+div_bf = BeautifulSoup(html,"html.parser")
+div = div_bf.find_all("div",class_="box")
 
-    def writer(slef,name,path,text):
-        write_flag = True
-        with open(path,"a",encoding="utf-8") as f:
-            f.write(name + "\n")
-            f.write(text)
-            f.write("\n\n")
+for i in div:
+	a_bf = BeautifulSoup(str(i),"html.parser")
+	a = a_bf.find_all("a")
+	nums = len(a)
+	for each in a:
+		names.append(each.string)
+		urls.append(each.get("href"))
 
-if __name__ == "__main__":
-    dl = downloader()
-    dl.get_download_url()
-    print("《盗墓笔记》开始下载：")
-    for i in range(dl.nums):
-        dl.writer(dl.names[i],"都市至尊系统.txt",dl.get_contents(dl.urls[i]))
-        sys.stdout.write("已下载： %.3f" % float(i/dl.nums) + "\r")
-        sys.stdout.flush()
-    print('下载完成！')
+def writer(name,path,text):
+	write_flag = True
+	with open(path,"a",encoding="utf-8") as f:
+		f.write(name + "\n")
+		f.write(text)
+		f.write("\n\n")
 
+print("盗墓笔记开始下载-------------")
+
+for i in range(nums):
+	each_req = requests.get(urls[i])
+	each_html = each_req.text
+	# each_html = each_html.decode("utf-8")
+	each_bf = BeautifulSoup(each_html,"html.parser")
+	each_content = each_bf.find_all("div",class_="content-body")
+	each_text = each_content[0].text
+	# print(each_bf)
+	# print(each_content)
+	# each_text = each_content.text.replace("\xa0"*8,"\n\n")
+	writer(names[i],"盗墓笔记.txt",each_text)
+	sys.stdout.write("已下载： %.3f" % float(i/nums) + "\r")
+	sys.stdout.flush()
