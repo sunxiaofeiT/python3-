@@ -8,7 +8,7 @@
 from bs4 import BeautifulSoup
 import requests,sys
 
-target_url = "http://www.seputu.com"
+target_url = "http://www.daomubiji.com/dao-mu-bi-ji-1/"
 
 names = []	#章节名字
 urls = [] 	#章节链接
@@ -18,12 +18,13 @@ req = requests.get(target_url)
 html = req.text
 
 div_bf = BeautifulSoup(html,"html.parser")
-div = div_bf.find_all("div",class_="box")
+div = div_bf.find_all("article",class_="excerpt excerpt-c3")
 
-for i in div:
-	a_bf = BeautifulSoup(str(i),"html.parser")
+nums = len(div)
+
+for each in div:
+	a_bf = BeautifulSoup(str(each),"html.parser")
 	a = a_bf.find_all("a")
-	nums = len(a)
 	for each in a:
 		names.append(each.string)
 		urls.append(each.get("href"))
@@ -42,10 +43,10 @@ for i in range(nums):
 	each_html = each_req.text
 	# each_html = each_html.decode("utf-8")
 	each_bf = BeautifulSoup(each_html,"html.parser")
-	each_content = each_bf.find_all("div",class_="content-body")
+	each_content = each_bf.find_all("article",class_="article-content")
 	each_text = each_content[0].text
 	# print(each_bf)
-	# print(each_content)
+	# print(each_text)
 	# each_text = each_content.text.replace("\xa0"*8,"\n\n")
 	writer(names[i],"盗墓笔记.txt",each_text)
 	sys.stdout.write("已下载： %.3f" % float(i/nums) + "\r")

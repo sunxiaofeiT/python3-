@@ -34,8 +34,7 @@ class downloader(object):
         texts = texts[0].text.replace("\xa0"*8,'\n\n')
         return texts
 
-    def writer(slef,name,path,text):
-        write_flag = True
+    def writer(self,name,path,text):
         with open(path,"a",encoding="utf-8") as f:
             f.write(name + "\n")
             f.write(text)
