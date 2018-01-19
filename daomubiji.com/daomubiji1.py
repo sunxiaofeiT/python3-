@@ -20,7 +20,7 @@ home_as = []
 for each_a in home_a_down[2:13]:
 	home_as.append(each_a.get("href"))
 
-print(home_as)
+# print(home_as)
 
 names = []  # 章节名字
 urls = []  # 章节链接
@@ -64,7 +64,6 @@ for i in range(all_nums):
 	# print(each_bf)
 	# print(each_text)
 	# each_text = each_content.text.replace("\xa0"*8,"\n\n")
-	print(names[i])
 	writer(names[i], "盗墓笔记.txt", each_text)
-	sys.stdout.write("已下载： %.1f" % float((i / nums) * 100) + "% \r")
+	sys.stdout.write("已下载： %.1f" % float((i / all_nums) * 100) + "% \r")
 	sys.stdout.flush()
